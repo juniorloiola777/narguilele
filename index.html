@@ -71,12 +71,14 @@ try{
   const rows=await response.json();
   if(!Array.isArray(rows))throw new Error('Resposta inválida do catálogo');
   const byId=new Map(embeddedProducts.map(p=>[p.id,p]));
-  P=rows.map(row=>{
+  const fetched=rows.map(row=>{
     const price=Number(row.price), original=byId.get(row.id);
     return {id:row.id,codigo:row.codigo,name:row.name,price,
       priceLabel:original&&original.price===price?original.priceLabel:'R'+String.fromCharCode(36)+price.toFixed(2).replace('.',','),
       categoryRaw:row.category_raw,category:row.category,slug:row.slug};
   });
+  const order=new Map(embeddedProducts.map((p,i)=>[p.id,i]));
+  P=fetched.sort((a,b)=>(order.get(a.id)??Number.MAX_SAFE_INTEGER)-(order.get(b.id)??Number.MAX_SAFE_INTEGER));
 }catch(error){console.warn('Usando catálogo local:',error)}
 finally{clearTimeout(catalogTimer)}
 const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();const initials=s=>s.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
