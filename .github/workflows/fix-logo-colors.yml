@@ -1,0 +1,49 @@
+name: Ajustar cores da logo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-logo-colors.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-logo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ajustar cores da logo no index.html
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+
+          old = 'narguile<em>-lê</em>'
+          new = '<span class="logo-red">nar</span><span class="logo-blue">guile-</span><span class="logo-red">lê</span>'
+
+          count = html.count(old)
+          if count == 0:
+              raise SystemExit('Wordmark esperado não encontrado no index.html')
+
+          html = html.replace(old, new)
+
+          css = '.wordmark .logo-red{color:var(--red)}.wordmark .logo-blue{color:var(--blue)}.wordmark small{color:var(--blue)}'
+          if css not in html:
+              html = html.replace('</style>', css + '</style>', 1)
+
+          path.write_text(html, encoding='utf-8')
+          print(f'Wordmark ajustado em {count} ocorrência(s).')
+
+      - name: Commit e push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Ajustar cores da logo Narguile-le"
+          git push
