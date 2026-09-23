@@ -1,0 +1,95 @@
+name: Aplicar estilo arredondado ao carrossel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-carousel-style.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-carousel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ajustar carrossel
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+
+          marker = '/* carousel-rounded-v2 */'
+          if marker in html:
+              raise SystemExit('Estilo já aplicado')
+
+          css = r'''
+/* carousel-rounded-v2 */
+.hero{
+  width:min(1460px,calc(100% - 36px));
+  margin:18px auto 0;
+  border-radius:34px;
+  box-shadow:0 20px 55px rgba(8,46,111,.14);
+}
+.hero-arrow{
+  width:50px;
+  height:50px;
+  border:0;
+  background:rgba(255,255,255,.96);
+  color:var(--blue);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:0;
+  box-shadow:0 10px 28px rgba(0,0,0,.20);
+  backdrop-filter:blur(8px);
+  transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
+}
+.hero-arrow::before{
+  display:block;
+  font:700 34px/1 Arial,sans-serif;
+  transform:translateY(-1px);
+}
+.hero-arrow.prev::before{content:"‹"}
+.hero-arrow.next::before{content:"›"}
+.hero-arrow.prev{left:20px}
+.hero-arrow.next{right:20px}
+.hero-arrow:hover{
+  transform:translateY(-50%) scale(1.06);
+  background:#fff;
+  box-shadow:0 12px 32px rgba(0,0,0,.24);
+}
+@media(max-width:760px){
+  .hero{
+    width:calc(100% - 20px);
+    margin-top:10px;
+    border-radius:22px;
+  }
+  .hero-arrow{
+    width:42px;
+    height:42px;
+  }
+  .hero-arrow::before{font-size:29px}
+  .hero-arrow.prev{left:10px}
+  .hero-arrow.next{right:10px}
+}
+'''
+
+          if '</style>' not in html:
+              raise SystemExit('Tag </style> não encontrada')
+
+          html = html.replace('</style>', css + '\n</style>', 1)
+          path.write_text(html, encoding='utf-8')
+
+      - name: Commit e push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Deixar carrossel mais arredondado e atualizar setas"
+          git push
