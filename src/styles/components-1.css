@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Narguilé-Lê — componentes
+   ========================================================================== */
+
+/* ---------- Top bar ---------- */
+.topbar {
+  background: var(--blue);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.71875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 36px; }
+.topbar-list { display: flex; gap: 28px; }
+.topbar-list li, .topbar-age { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.topbar-list .icon { opacity: 0.7; }
+.topbar-age { color: var(--white); }
+.topbar .age-badge { color: #ff8a98; }
+
+/* ---------- Marca ---------- */
+.brand { display: inline-flex; align-items: center; gap: 12px; flex: none; }
+.brand-mascot { width:48px;height:48px;border-radius:50%;overflow:hidden;flex:none;background:var(--white);box-shadow:0 0 0 1px var(--line); }
+.brand-mascot img { width:100%;height:100%;object-fit:cover; }
+.brand-type { display:grid;line-height:1; }
+.brand-word { font-size:1.4375rem;font-weight:800;letter-spacing:-.035em;white-space:nowrap; }
+.bw-red { color:var(--red); }.bw-blue { color:var(--blue); }
+.brand-sub { margin-top:5px;font-size:.59375rem;font-weight:700;letter-spacing:.44em;color:var(--blue);white-space:nowrap; }
+.brand--compact .brand-mascot { width:40px;height:40px; }.brand--compact .brand-word { font-size:1.25rem; }
+.brand--footer .brand-mascot { width:56px;height:56px; }.brand--footer .brand-word { font-size:1.5rem; }
+
+/* ---------- Header ---------- */
+.site-header { position:sticky;top:0;z-index:60;background:var(--white);border-bottom:1px solid transparent;transition:background-color var(--t-med) var(--ease),border-color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease); }
+.site-header.is-scrolled { background:rgba(255,255,255,.965);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom-color:var(--line);box-shadow:0 6px 20px -18px rgba(11,31,58,.5); }
+.header-inner { display:flex;align-items:center;gap:28px;height:var(--header-h); }
+.main-nav { margin-left:auto; }.main-nav ul { display:flex;align-items:center;gap:2px; }
+.nav-link { position:relative;display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 12px;font-size:.8125rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);transition:color var(--t-fast); }
+.nav-link::after { content:'';position:absolute;left:12px;right:12px;bottom:6px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease); }
+.nav-link:hover { color:var(--blue); }.nav-link:hover::after,.nav-link.is-active::after,.mega-open .has-mega .nav-link::after { transform:scaleX(1); }.nav-link.is-active { color:var(--blue); }
+.nav-chev { transition:transform var(--t-fast) var(--ease); }.mega-open .nav-chev { transform:rotate(180deg); }
+.header-actions { display:flex;align-items:center;gap:6px; }
+.search-trigger { display:inline-flex;align-items:center;gap:10px;height:44px;width:248px;padding:0 14px;border:1px solid var(--line-2);border-radius:var(--r-md);background:var(--bg-2);color:var(--muted);font-size:var(--fs-sm);transition:border-color var(--t-fast),background-color var(--t-fast); }
+.search-trigger:hover { border-color:var(--blue);background:var(--white); }.search-trigger-text { white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.cart-count { position:absolute;top:3px;right:1px;min-width:18px;height:18px;padding:0 5px;display:grid;place-items:center;border-radius:999px;background:var(--red);color:var(--white);font-size:.6875rem;font-weight:800;line-height:1;border:2px solid var(--white); }
+.menu-trigger { display:none; }
+
+.mega { position:absolute;left:0;right:0;top:100%;background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);box-shadow:0 30px 40px -34px rgba(11,31,58,.45);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity var(--t-fast) var(--ease),transform var(--t-med) var(--ease),visibility 0s linear var(--t-med); }
+.mega-open .mega { opacity:1;visibility:visible;transform:none;transition-delay:0s; }
+.mega-inner { display:grid;grid-template-columns:260px 1fr;gap:48px;padding-block:36px 40px; }.mega-title { font-size:1.375rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px; }
+.mega-list { display:grid;grid-template-columns:repeat(3,1fr);gap:4px 24px; }.mega-link { display:flex;align-items:center;gap:14px;padding:10px;border-radius:var(--r-md);transition:background-color var(--t-fast); }.mega-link:hover { background:var(--bg-2); }
+.mega-art { width:44px;height:44px;flex:none;display:grid;place-items:center;background:var(--bg-3);border-radius:var(--r-md);color:var(--blue); }.mega-art .cat-art { width:30px;height:30px; }.mega-name { display:block;font-weight:700;font-size:.9375rem; }.mega-count { display:block;font-size:var(--fs-xs);color:var(--muted); }.mega-link:hover .mega-name { color:var(--blue); }
+
+.mobile-menu { position:fixed;inset:0;z-index:90; }.mm-backdrop { position:absolute;inset:0;background:rgba(6,20,45,.45);opacity:0;transition:opacity var(--t-med) var(--ease); }.mm-panel { position:absolute;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--white);padding:16px 20px 32px;overflow-y:auto;overscroll-behavior:contain;transform:translateX(100%);transition:transform var(--t-med) var(--ease); }
+.mobile-menu.is-open .mm-backdrop { opacity:1; }.mobile-menu.is-open .mm-panel { transform:none; }.mm-head { display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line); }.mm-nav { display:grid;margin-top:8px; }.mm-nav a { display:flex;justify-content:space-between;align-items:center;min-height:54px;font-size:1.125rem;font-weight:700;letter-spacing:-.01em;border-bottom:1px solid var(--line); }.mm-nav a .icon { color:var(--muted-2); }.mm-nav a.is-active { color:var(--red); }.mm-label { margin:28px 0 8px;font-size:var(--fs-xs);font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted); }

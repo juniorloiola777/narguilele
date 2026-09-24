@@ -1,0 +1,8 @@
+import { CONFIG } from '../config.js';
+import { fetchActiveProducts, isSupabaseConfigured } from './supabase.js';
+import { safeUrl } from '../utils/sanitize.js';
+const localImageSet=new Set(CONFIG.catalog.localImages);
+function normalizeProduct(raw){if(!raw||typeof raw!=='object')return null;const id=raw.id!=null?String(raw.id):'',name=typeof raw.name==='string'?raw.name.trim():'',price=Number(raw.price),slug=typeof raw.slug==='string'?raw.slug.trim():'';if(!id||!name||!Number.isFinite(price)||!slug)return null;const remote=safeUrl(raw.image_url??raw.imageUrl??raw.image??''),local=localImageSet.has(slug)?`/assets/products/${slug}.${CONFIG.catalog.imageExt}`:'';return{id,codigo:raw.codigo!=null?String(raw.codigo):'',name,price,priceLabel:raw.priceLabel??raw.price_label??'',category:raw.category||'Outros',categoryRaw:raw.categoryRaw??raw.category_raw??'',slug,image:remote||local||''};}
+function validate(list){if(!Array.isArray(list))return[];const out=[],seen=new Set();for(const r of list){const p=normalizeProduct(r);if(p&&!seen.has(p.id)){seen.add(p.id);out.push(p);}}return out;}
+async function loadLocal(){const mod=await import('../data/products.js');return validate(mod.PRODUCTS||mod.default);}
+export async function loadProducts(){if(isSupabaseConfigured()){try{const remote=validate(await fetchActiveProducts());if(remote.length)return{products:remote,source:'supabase'};console.warn('[narguilele] Supabase retornou vazio — usando catálogo local.');}catch(err){console.warn('[narguilele] Supabase indisponível — usando catálogo local.',err?.message||err);}}return{products:await loadLocal(),source:'local'};}

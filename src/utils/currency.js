@@ -1,0 +1,2 @@
+import { CONFIG } from '../config.js';
+const fmt=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});export function formatBRL(value){const n=Number(value);return fmt.format(Number.isFinite(n)?n:0);}export function isConsultPrice(price){const n=Number(price);return !Number.isFinite(n)||n<=CONFIG.catalog.consultPriceMax;}export function priceText(product){return isConsultPrice(product.price)?'Sob consulta':formatBRL(product.price);}
