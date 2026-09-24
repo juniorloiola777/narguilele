@@ -19,14 +19,17 @@
 <main>
   <div id="notice" role="status" aria-live="polite"></div>
   <section id="login" class="card hidden">
-    <h1>Acesso administrativo</h1><p>Entre com o e-mail autorizado. O Supabase enviará um link de acesso; se receber um código, informe-o abaixo.</p>
-    <form id="loginForm"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" value="juniorloiola777@gmail.com" required><div class="actions"><button class="btn" type="submit">Enviar acesso</button></div></form>
+    <h1>Acesso administrativo</h1><p>Entre com o e-mail autorizado e sua senha.</p>
+    <form id="passwordLoginForm"><label for="passwordEmail">E-mail</label><input id="passwordEmail" type="email" autocomplete="email" value="juniorloiola777@gmail.com" required><label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required><div class="actions"><button class="btn" type="submit">Entrar com senha</button></div></form>
+    <h2 style="margin-top:28px">Primeiro acesso ou sem senha?</h2><p>Receba um link no e-mail autorizado. Depois de entrar, defina sua senha no painel. Se receber um código, informe-o abaixo.</p>
+    <form id="loginForm"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" value="juniorloiola777@gmail.com" required><div class="actions"><button class="btn secondary" type="submit">Enviar acesso por e-mail</button></div></form>
     <form id="codeForm"><label for="code">Código recebido por e-mail</label><input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Código de 6 dígitos"><div class="actions"><button class="btn secondary" type="submit">Confirmar código</button></div></form>
     <form id="linkForm"><label for="accessLink">Se o link abrir fora deste painel, cole-o aqui antes de usá-lo</label><input id="accessLink" type="url" placeholder="Cole o link recebido no e-mail"><div class="actions"><button class="btn secondary" type="submit">Entrar com o link</button></div></form>
   </section>
   <section id="denied" class="card hidden"><h1>Acesso não autorizado</h1><p>Esta conta não tem permissão para alterar o conteúdo. Entre com o e-mail do administrador.</p><button id="deniedLogout" class="btn secondary">Sair</button></section>
   <section id="dashboard" class="hidden">
     <div class="row"><div class="grow"><h1>Gerenciar conteúdo</h1><p>Alterações salvas aqui aparecem no site.</p></div><button id="logout" class="btn secondary">Sair</button></div>
+    <section class="card"><h2>Senha do painel</h2><p>Defina ou altere a senha da sua conta. Use-a com seu e-mail nos próximos acessos.</p><form id="passwordSetupForm"><div class="grid"><div><label for="newPassword">Nova senha</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></div><div><label for="confirmPassword">Confirmar nova senha</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></div></div><div class="actions"><button class="btn secondary" type="submit">Salvar senha</button></div></form></section>
     <div class="tabs" role="tablist"><button id="tabProducts" role="tab" aria-selected="true">Produtos</button><button id="tabBanners" role="tab" aria-selected="false">Carrossel</button></div>
     <section id="productsPanel" class="card">
       <h2>Produtos publicados</h2><p>Edite nome, preço ou foto. Remover oculta o produto do site e preserva o registro.</p>
@@ -59,3 +62,4 @@
 <script src="/assets/admin.js"></script>
 </body>
 </html>
+
