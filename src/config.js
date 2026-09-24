@@ -47,7 +47,7 @@ export const CONFIG = {
   },
 
   // Ordem de exibição das categorias (nomes reais do catálogo).
-  categoryOrder: ['Bebidas', 'Outros', 'Acessórios'],
+  categoryOrder: ['Alimentos', 'Bebidas', 'Outros', 'Acessórios'],
 
   // Seleções configuráveis da home (ids reais do catálogo).
   // O catálogo não tem campo de "lançamento", então esta vitrine é uma seleção editável.
@@ -80,3 +80,4 @@ export const CONFIG = {
 };
 
 export default CONFIG;
+

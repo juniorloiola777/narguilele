@@ -13,6 +13,7 @@
     .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.grow{flex:1}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px}.item{display:grid;grid-template-columns:90px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}.item:first-child{border-top:0}.preview{width:90px;height:90px;border-radius:12px;background:#edf1f7;object-fit:cover}.preview.empty{display:grid;place-items:center;color:var(--muted);font-size:12px;text-align:center}.login-card{max-width:420px;margin:10vh auto}.login-card .btn{width:100%}
     label{display:block;color:var(--muted);font-size:12px;font-weight:bold;margin:10px 0 4px}input,textarea,select{width:100%;border:1px solid #c8d2df;border-radius:10px;padding:10px;background:white;color:var(--ink)}textarea{min-height:70px}input[type=file]{padding:7px}.btn{border:0;border-radius:10px;background:var(--blue);color:white;padding:10px 15px;font-weight:bold}.btn.secondary{background:#e8eef7;color:var(--blue)}.btn.danger{background:#fff0f2;color:#ae1830}.btn:disabled{opacity:.55;cursor:wait}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{padding:12px 16px;border-radius:10px;background:#e8f4ee;color:#14613c;margin:12px 0}.notice.error{background:#fff0f2;color:#a52238}.hidden{display:none!important}.tabs{display:flex;gap:8px;margin:20px 0}.tabs button[aria-selected=true]{background:var(--blue);color:white}.tabs button{background:white;border:1px solid var(--line);border-radius:9px;padding:10px 16px}small{color:var(--muted)}@media(max-width:600px){.item{grid-template-columns:1fr}.preview{width:100%;height:170px}header{padding:18px 20px}}
   </style>
+  <link rel="stylesheet" href="/assets/admin.css">
 </head>
 <body>
 <header id="siteHeader" class="hidden"><strong>Narguile-lê · Painel</strong><a href="/">Ver site</a></header>
@@ -22,35 +23,37 @@
     <h1>Entrar no painel</h1>
     <form id="passwordLoginForm"><label for="username">Usuário</label><input id="username" type="text" autocomplete="username" required><label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required><div class="actions"><button class="btn" type="submit">Entrar</button></div></form>
   </section>
-  <section id="denied" class="card hidden"><h1>Acesso não autorizado</h1><p>Esta conta não tem permissão para alterar o conteúdo. Entre com o e-mail do administrador.</p><button id="deniedLogout" class="btn secondary">Sair</button></section>
+  <section id="denied" class="card hidden"><h1>Acesso não autorizado</h1><p>Esta conta não tem permissão para alterar o conteúdo.</p><button id="deniedLogout" class="btn secondary">Sair</button></section>
   <section id="dashboard" class="hidden">
-    <div class="row"><div class="grow"><h1>Gerenciar conteúdo</h1><p>Alterações salvas aqui aparecem no site.</p></div><button id="logout" class="btn secondary">Sair</button></div>
-    <section class="card"><h2>Senha do painel</h2><p>Altere a senha da sua conta. Use-a com seu usuário nos próximos acessos.</p><form id="passwordSetupForm"><div class="grid"><div><label for="newPassword">Nova senha</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></div><div><label for="confirmPassword">Confirmar nova senha</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></div></div><div class="actions"><button class="btn secondary" type="submit">Salvar senha</button></div></form></section>
-    <div class="tabs" role="tablist"><button id="tabProducts" role="tab" aria-selected="true">Produtos</button><button id="tabBanners" role="tab" aria-selected="false">Carrossel</button></div>
-    <section id="productsPanel" class="card">
-      <h2>Produtos publicados</h2><p>Edite nome, preço ou foto. Remover oculta o produto do site e preserva o registro.</p>
-      <input id="productSearch" type="search" placeholder="Buscar por nome ou código" aria-label="Buscar produtos">
-      <div id="productsList"></div>
-      <h3>Novo produto</h3>
-      <form id="newProduct" class="grid">
+    <div class="dashboard-head row"><div class="grow"><p class="eyebrow">NARGUILÉ-LÊ · ADMINISTRAÇÃO</p><h1>Painel de conteúdo</h1><p>Gerencie o que aparece na página inicial e no catálogo.</p></div><button id="logout" class="btn secondary">Sair</button></div>
+    <div class="main-tabs" role="tablist" aria-label="Seções do painel"><button id="tabHome" type="button" role="tab" aria-controls="homePanel" aria-selected="true" tabindex="0">Início</button><button id="tabProducts" type="button" role="tab" aria-controls="productsPanel" aria-selected="false" tabindex="-1">Produtos</button></div>
+    <section id="homePanel" role="tabpanel" aria-labelledby="tabHome">
+      <div class="stats-grid"><div class="stat"><strong id="bannerCount">0</strong><span>Banners publicados</span></div><div class="stat"><strong id="productCountHome">0</strong><span>Produtos publicados</span></div></div>
+      <div class="section-heading"><div><h2>Carrossel da página inicial</h2><p>Veja as artes atuais, troque a foto, ajuste os textos e a ordem.</p></div><span class="dimension-badge">Formato 1920 × 617 px</span></div>
+      <div id="bannersList" class="banner-list"></div>
+      <details class="card editor-details"><summary>Adicionar banner</summary><form id="newBanner" class="grid">
+        <div><label for="newBannerTitle">Título</label><input id="newBannerTitle" maxlength="140" required></div>
+        <div><label for="newBannerDescription">Descrição</label><input id="newBannerDescription" maxlength="300"></div>
+        <div><label for="newBannerImage">Imagem (recomendado: 1920 × 617 px)</label><input id="newBannerImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required></div>
+        <div class="actions"><button class="btn" type="submit">Publicar banner</button></div>
+      </form></details>
+      <details class="card editor-details account-details"><summary>Alterar senha do painel</summary><form id="passwordSetupForm"><div class="grid"><div><label for="newPassword">Nova senha</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></div><div><label for="confirmPassword">Confirmar nova senha</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></div></div><div class="actions"><button class="btn secondary" type="submit">Salvar senha</button></div></form></details>
+    </section>
+    <section id="productsPanel" role="tabpanel" aria-labelledby="tabProducts" class="hidden">
+      <div class="section-heading"><div><h2>Produtos</h2><p>Organizados pelas categorias do catálogo. Edite dados e fotos sem alterar o código.</p></div><span id="productCount" class="dimension-badge">0 publicados</span></div>
+      <div class="product-toolbar"><label for="productSearch">Buscar produto</label><input id="productSearch" type="search" placeholder="Nome ou código" autocomplete="off"></div>
+      <div id="categoryFilters" class="category-filters" role="group" aria-label="Filtrar por categoria"></div>
+      <p id="productsResult" class="result-count" aria-live="polite"></p>
+      <div id="productsList" class="product-list"></div>
+      <div class="pagination"><button id="prevPage" type="button" class="btn secondary">Anterior</button><span id="pageInfo"></span><button id="nextPage" type="button" class="btn secondary">Próxima</button></div>
+      <details class="card editor-details"><summary>Adicionar produto</summary><form id="newProduct" class="grid">
         <div><label for="newName">Nome</label><input id="newName" required maxlength="140"></div>
         <div><label for="newPrice">Preço (R$)</label><input id="newPrice" type="number" min="0" step="0.01" required></div>
         <div><label for="newCode">Código</label><input id="newCode" maxlength="40" required></div>
-        <div><label for="newCategory">Categoria</label><select id="newCategory"><option value="APERITIVO">Alimentos</option><option value="REFRIGERANTE">Bebidas sem álcool</option><option value="ACESSORIOS">Outros itens</option></select></div>
+        <div><label for="newCategory">Categoria</label><select id="newCategory"></select></div>
         <div><label for="newImage">Foto (opcional)</label><input id="newImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif"></div>
         <div class="actions"><button class="btn" type="submit">Criar produto</button></div>
-      </form>
-    </section>
-    <section id="bannersPanel" class="card hidden">
-      <h2>Imagens do carrossel</h2><p>Troque imagens, altere os textos, mude a ordem ou retire um banner do site.</p>
-      <div id="bannersList"></div>
-      <h3>Novo banner</h3>
-      <form id="newBanner" class="grid">
-        <div><label for="newBannerTitle">Título</label><input id="newBannerTitle" maxlength="140" required></div>
-        <div><label for="newBannerDescription">Descrição</label><input id="newBannerDescription" maxlength="300"></div>
-        <div><label for="newBannerImage">Imagem</label><input id="newBannerImage" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required></div>
-        <div class="actions"><button class="btn" type="submit">Adicionar banner</button></div>
-      </form>
+      </form></details>
     </section>
   </section>
 </main>

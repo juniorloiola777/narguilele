@@ -75,7 +75,7 @@ function slides() {
       ...base,
       title: banner.title ? esc(banner.title) : base.title,
       text: banner.description ? esc(banner.description) : base.text,
-      media: image ? `<img class="hero-photo" src="${esc(image)}" alt="${esc(banner.title || base.label)}" loading="lazy" decoding="async" />` : base.media,
+      imageUrl: image,
     };
   });
 }
@@ -89,7 +89,8 @@ export function Hero() {
       ${s
         .map(
           (sl, i) => `
-        <div class="hero-slide${i === 0 ? ' is-active' : ''}" role="group" aria-roledescription="slide" aria-label="${i + 1} de ${s.length}: ${sl.label}" ${i === 0 ? '' : 'aria-hidden="true" inert'}>
+        <div class="hero-slide${i === 0 ? ' is-active' : ''}${sl.imageUrl ? ' hero-slide--photo' : ''}" role="group" aria-roledescription="slide" aria-label="${i + 1} de ${s.length}: ${sl.label}" ${i === 0 ? '' : 'aria-hidden="true" inert'}>
+          ${sl.imageUrl ? `<img class="hero-backdrop" src="${esc(sl.imageUrl)}" alt="" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" />` : ''}
           <div class="container hero-grid">
             <div class="hero-copy">
               <p class="hero-eyebrow eyebrow">${sl.eyebrow}</p>
@@ -97,7 +98,7 @@ export function Hero() {
               <p class="hero-text">${sl.text}</p>
               <div class="hero-actions">${sl.actions}</div>
             </div>
-            <div class="hero-media">${sl.media}</div>
+            ${sl.imageUrl ? '' : `<div class="hero-media">${sl.media}</div>`}
           </div>
         </div>`
         )
@@ -256,3 +257,4 @@ export function Benefits() {
     </ul>
   </section>`;
 }
+
