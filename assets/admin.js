@@ -99,9 +99,9 @@
   }); };
   $('#loginForm').onsubmit = event => { event.preventDefault(); run(async () => {
     email = $('#email').value.trim().toLowerCase();
-    const {error} = await db.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/admin.html',shouldCreateUser:true}});
+    const {error} = await db.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/admin.html',shouldCreateUser:false}});
     if (error) throw error;
-    message('Verifique seu e-mail e abra o link de acesso. Se receber um código, informe-o aqui.');
+    message('Enviamos um novo link. Copie o mais recente sem abri-lo e cole no campo abaixo.');
   }); };
   $('#codeForm').onsubmit = event => { event.preventDefault(); run(async () => {
     const {error} = await db.auth.verifyOtp({email:email || $('#email').value.trim(),token:$('#code').value.trim(),type:'email'});
