@@ -3,16 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "E-commerce Narguilé-Lê Hookah Lounge — Vite + Vanilla JS",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "motion": "^12.23.0"
-  },
-  "devDependencies": {
-    "vite": "^7.1.0"
+    "build": "node build.mjs"
   }
 }
