@@ -91,6 +91,7 @@
     const {error} = await db.auth.signInWithPassword({email:ADMIN_EMAIL,password});
     if (error) throw new Error('Usuário ou senha inválidos.');
     await sessionChanged();
+    message('');
   }); };
   $('#passwordSetupForm').onsubmit = event => { event.preventDefault(); run(async () => {
     const password = $('#newPassword').value;
@@ -101,7 +102,7 @@
     event.target.reset();
     message('Senha salva. Você já pode entrar com usuário e senha.');
   }); };
-  async function logout() { await db.auth.signOut(); await sessionChanged(); message('Sessão encerrada.'); }
+  async function logout() { await db.auth.signOut(); await sessionChanged(); message(''); }
   $('#logout').onclick = logout; $('#deniedLogout').onclick = logout;
   $('#tabProducts').onclick = () => { show('#productsPanel',true);show('#bannersPanel',false);$('#tabProducts').setAttribute('aria-selected','true');$('#tabBanners').setAttribute('aria-selected','false'); };
   $('#tabBanners').onclick = () => { show('#productsPanel',false);show('#bannersPanel',true);$('#tabProducts').setAttribute('aria-selected','false');$('#tabBanners').setAttribute('aria-selected','true'); };
