@@ -1,4 +1,4 @@
 // Catálogo principal carregado do Supabase.
-// Fallback local temporariamente vazio; os 498 produtos ativos estão no banco.
+// Fallback local vazio para que itens desativados nunca reapareçam.
 export const PRODUCTS = [];
 export default PRODUCTS;

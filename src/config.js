@@ -47,7 +47,7 @@ export const CONFIG = {
   },
 
   // Ordem de exibição das categorias (nomes reais do catálogo).
-  categoryOrder: ['Narguilés', 'Essências', 'Carvão', 'Acessórios', 'Tabacaria', 'Bebidas', 'Sessões', 'Combos', 'Outros'],
+  categoryOrder: ['Bebidas', 'Outros', 'Acessórios'],
 
   // Seleções configuráveis da home (ids reais do catálogo).
   // O catálogo não tem campo de "lançamento", então esta vitrine é uma seleção editável.
@@ -57,13 +57,13 @@ export const CONFIG = {
     heroImages: ['', '', ''],
     selection: {
       eyebrow: 'Seleção da casa',
-      title: 'Escolhidos para a sua sessão',
-      ids: ['1002', '843', '1025', '991', '871', '775', '913', '882'],
+      title: 'Escolhidos para você',
+      ids: [],
     },
-    featuredTabs: ['Narguilés', 'Essências', 'Carvão', 'Acessórios', 'Bebidas'],
+    featuredTabs: ['Bebidas', 'Outros', 'Acessórios'],
     recommendations: {
       title: 'Complete o seu pedido',
-      categories: ['Carvão', 'Acessórios', 'Bebidas', 'Tabacaria'],
+      categories: ['Bebidas', 'Outros', 'Acessórios'],
     },
   },
 

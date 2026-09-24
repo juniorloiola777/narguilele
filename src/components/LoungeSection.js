@@ -2,10 +2,8 @@ import { icon } from './icons.js';
 import { CONFIG } from '../config.js';
 import { waLink } from '../services/whatsapp.js';
 import { esc, safeUrl } from '../utils/sanitize.js';
-import { getCategories } from '../store/catalog.js';
 
 export function LoungeSection() {
-  const sessions = getCategories().find((c) => c.name === 'Sessões');
   const photos = (CONFIG.lounge?.photos || []).map(safeUrl).filter(Boolean);
   const hero = photos[0] || CONFIG.lounge.fallbackPhoto;
   return `
@@ -20,16 +18,14 @@ export function LoungeSection() {
       <div class="lounge-copy" data-reveal>
         <p class="lounge-kicker"><span class="visually-hidden">Narguilé-Lê Hookah Lounge</span><span aria-hidden="true"><span class="bw-red">NAR</span><span class="bw-blue">GUILE-</span><span class="bw-red">LÊ</span></span><span class="lounge-kicker-sub" aria-hidden="true">HOOKAH LOUNGE</span></p>
         <h2 class="section-title section-title--xl" id="lounge-title">Um lounge para desacelerar.</h2>
-        <p class="lounge-text">Sessões preparadas na hora, ambiente para reunir os amigos e o mesmo cuidado da loja — em ${esc(CONFIG.brand.city)}.</p>
+        <p class="lounge-text">Um ambiente para reunir os amigos e conhecer a loja — em ${esc(CONFIG.brand.city)}.</p>
         <dl class="lounge-facts">
           <div><dt>Local</dt><dd>${esc(CONFIG.contact.address)}</dd></div>
           ${CONFIG.contact.hours ? `<div><dt>Horário</dt><dd>${esc(CONFIG.contact.hours)}</dd></div>` : ''}
-          ${sessions ? `<div><dt>Sessões</dt><dd>${sessions.count} opções no cardápio</dd></div>` : ''}
           <div><dt>Reservas</dt><dd>Pelo WhatsApp</dd></div>
         </dl>
         <div class="lounge-actions">
           <a class="btn btn-primary" href="${waLink('Olá! Quero conhecer o lounge da Narguilé-Lê.')}" target="_blank" rel="noopener">Conhecer o lounge${icon('arrowRight', { size: 18 })}</a>
-          ${sessions ? `<a class="btn btn-ghost" href="#/produtos?categoria=${sessions.slug}">Ver sessões</a>` : ''}
         </div>
       </div>
     </div>

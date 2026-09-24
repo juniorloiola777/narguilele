@@ -1,4 +1,6 @@
 import { loadProducts } from './services/products.js';
+import { fetchActiveBanners } from './services/supabase.js';
+import { setBanners } from './store/banners.js';
 import { setProducts } from './store/catalog.js';
 import { initCart } from './store/cart.js';
 import { mountApp } from './app.js';
@@ -10,8 +12,10 @@ async function boot() {
 
   // Motion carrega em paralelo; se falhar, o site segue sem animações.
   const motion = initMotion();
-  const { products, source } = await loadProducts();
+  const [catalog, banners] = await Promise.all([loadProducts(),fetchActiveBanners().catch(error=>{console.warn('[narguilele] Banners indisponíveis',error);return [];})]);
+  const { products, source } = catalog;
   setProducts(products, source);
+  setBanners(banners);
   initCart();
   await motion;
   mountApp(root);

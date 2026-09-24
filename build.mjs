@@ -1,6 +1,10 @@
 import { rm, mkdir, copyFile, cp } from 'node:fs/promises';
+import { build } from 'esbuild';
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist', { recursive: true });
 await copyFile('index.html', 'dist/index.html');
+await copyFile('admin.html', 'dist/admin.html');
 await cp('src', 'dist/src', { recursive: true });
+await cp('assets', 'dist/assets', { recursive: true });
+await build({entryPoints:['src/client.js'],outfile:'dist/assets/site-db.js',bundle:true,minify:true,format:'iife',globalName:'SiteDB'});
 console.log('Static build ready in dist/');

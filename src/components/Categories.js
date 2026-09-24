@@ -1,4 +1,4 @@
-import { icon, categoryArt, hookahArt } from './icons.js';
+import { icon, categoryArt } from './icons.js';
 import { getCategories } from '../store/catalog.js';
 import { esc } from '../utils/sanitize.js';
 import { SectionHead } from './ProductGrid.js';
@@ -16,7 +16,7 @@ export function Categories() {
       <ul class="cat-grid" data-reveal-group>
         <li class="cat-tile cat-tile--lead">
           <a href="#/produtos?categoria=${lead.slug}">
-            <span class="cat-media">${lead.name === 'Narguilés' ? hookahArt('cat-hookah') : categoryArt(lead.name)}</span>
+            <span class="cat-media">${categoryArt(lead.name)}</span>
             <span class="cat-info">
               <span class="cat-name">${esc(lead.name)}</span>
               <span class="cat-count">${plural(lead.count)}</span>

@@ -5,5 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.117.1",
+    "esbuild": "0.25.12"
   }
 }

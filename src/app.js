@@ -37,7 +37,7 @@ function scrollToSection(id) {
 }
 
 function setMeta(title, description) {
-  document.title = title ? `${title} — ${BASE_TITLE}` : `${BASE_TITLE} — Narguilés, essências e delivery em Valparaíso de Goiás`;
+  document.title = title ? `${title} — ${BASE_TITLE}` : `${BASE_TITLE} — Loja e delivery em Valparaíso de Goiás`;
   if (description) document.querySelector('meta[name="description"]')?.setAttribute('content', description);
 }
 
@@ -53,7 +53,7 @@ function route() {
       main.innerHTML = HomePage();
       cleanup = initHomePage(main);
       currentView = 'home';
-      setMeta('', 'Loja, lounge e delivery Narguilé-Lê em Valparaíso de Goiás. Narguilés, essências, carvão, acessórios e bebidas com pedido pelo WhatsApp.');
+      setMeta('', 'Loja, lounge e delivery Narguilé-Lê em Valparaíso de Goiás. Confira os itens disponíveis.');
       reveal(main);
       if (!first) window.scrollTo(0, 0);
     }
@@ -71,7 +71,7 @@ function route() {
     initCatalogPage(main, params);
     currentView = `produtos?${params}`;
     setActiveNav(params.get('categoria') ? 'categorias' : 'produtos');
-    setMeta('Produtos', `Catálogo completo da Narguilé-Lê: narguilés, essências, carvão, acessórios, bebidas e mais.`);
+    setMeta('Produtos', 'Itens disponíveis na Narguilé-Lê.');
   } else if (first === 'produto' && second) {
     const slug = decodeURIComponent(second);
     main.innerHTML = ProductPage(slug);

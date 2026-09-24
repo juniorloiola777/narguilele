@@ -1,7 +1,8 @@
-import { icon, hookahArt } from './icons.js';
+import { icon } from './icons.js';
 import { CONFIG } from '../config.js';
 import { waLink } from '../services/whatsapp.js';
 import { getProducts, getCategories } from '../store/catalog.js';
+import { getBanners } from '../store/banners.js';
 import { heroIntro, prefersReducedMotion } from '../utils/animations.js';
 import { esc, safeUrl } from '../utils/sanitize.js';
 
@@ -15,12 +16,12 @@ function customImage(i, alt) {
 function slides() {
   const total = getProducts().length;
   const cats = getCategories().length;
-  return [
+  const defaults = [
     {
       label: 'A marca',
       eyebrow: 'Loja · Lounge · Delivery',
-      title: 'Tudo para o<br/>seu ritual.',
-      text: 'Narguilés, essências, carvão e acessórios em um só lugar — com pedido direto pelo WhatsApp e entrega em Valparaíso e região.',
+      title: 'Seu espaço.<br/>Sua escolha.',
+      text: 'Alimentos, bebidas sem álcool e itens do dia a dia em um só lugar — com pedido direto pelo WhatsApp e entrega em Valparaíso e região.',
       actions: `<a class="btn btn-primary" href="#/produtos">Explorar produtos${icon('arrowRight', { size: 18 })}</a>
                 <a class="btn btn-ghost" href="${waLink('Olá! Vim pelo site da Narguilé-Lê.')}" target="_blank" rel="noopener">${icon('message', { size: 18 })}Falar no WhatsApp</a>`,
       media:
@@ -34,14 +35,14 @@ function slides() {
     {
       label: 'Produtos',
       eyebrow: 'Catálogo completo',
-      title: 'Do rosh ao carvão.',
+      title: 'Encontre o que precisa.',
       text: `${total} produtos em ${cats} categorias. Busque pelo nome ou pelo código e monte o seu pedido em poucos toques.`,
-      actions: `<a class="btn btn-primary" href="#/produtos?categoria=narguiles">Ver narguilés${icon('arrowRight', { size: 18 })}</a>
-                <a class="btn btn-ghost" href="#/produtos?categoria=essencias">Ver essências</a>`,
+      actions: `<a class="btn btn-primary" href="#/produtos">Ver catálogo${icon('arrowRight', { size: 18 })}</a>
+                <a class="btn btn-ghost" href="#/produtos?categoria=bebidas">Ver bebidas</a>`,
       media:
         customImage(1, 'Produtos Narguilé-Lê') ||
         `<div class="hm hm--product">
-          ${hookahArt('hm-hookah')}
+          <img class="hm-mascot" src="${CONFIG.brand.mascotLarge}" alt="Mascote da Narguilé-Lê" width="600" height="600" loading="lazy" decoding="async" />
           <dl class="hm-stats">
             <div><dt>Produtos</dt><dd>${total}</dd></div>
             <div><dt>Categorias</dt><dd>${cats}</dd></div>
@@ -63,10 +64,25 @@ function slides() {
         </div>`,
     },
   ];
+  return getBanners().map((banner) => {
+    const base = defaults[Number(banner.id) - 1] || {
+      label: 'Destaque', eyebrow: 'Narguilé-Lê', title: 'Novidade na loja', text: '',
+      actions: `<a class="btn btn-primary" href="#/produtos">Ver catálogo${icon('arrowRight', { size: 18 })}</a>`,
+      media: '',
+    };
+    const image = safeUrl(banner.image_url);
+    return {
+      ...base,
+      title: banner.title ? esc(banner.title) : base.title,
+      text: banner.description ? esc(banner.description) : base.text,
+      media: image ? `<img class="hero-photo" src="${esc(image)}" alt="${esc(banner.title || base.label)}" loading="lazy" decoding="async" />` : base.media,
+    };
+  });
 }
 
 export function Hero() {
   const s = slides();
+  if (!s.length) return '';
   return `
   <section class="hero" aria-roledescription="carrossel" aria-label="Destaques Narguilé-Lê">
     <div class="hero-viewport">

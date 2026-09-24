@@ -9,7 +9,7 @@ export function PromoBar() {
         <li class="hide-sm">${icon('message', { size: 14 })}<span>Atendimento pelo WhatsApp</span></li>
         <li class="hide-md">${icon('grid', { size: 14 })}<span>Catálogo completo</span></li>
       </ul>
-      <p class="topbar-age"><span class="age-badge">18+</span><span>Venda proibida para menores de 18 anos</span></p>
+      <p class="topbar-age">Valparaíso de Goiás</p>
     </div>
   </div>`;
 }

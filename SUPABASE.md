@@ -5,17 +5,17 @@ URL pública: `https://wpyzjukssdnoxpvrfmti.supabase.co`
 
 ## Estado atual
 
-O catálogo original de 498 produtos foi importado para `public.products`. O `index.html` consulta os produtos ativos pela API do Supabase antes de montar as telas. Se a consulta falhar ou demorar mais de quatro segundos, utiliza o catálogo completo embutido no mesmo HTML. Design, busca, filtros, carrinho em `localStorage`, formulário de contato e fechamento por WhatsApp foram preservados.
+O catálogo original de 498 produtos permanece em `public.products` para recuperação. Em 24/09/2026, 462 itens relacionados a fumo, narguilé ou álcool foram desativados (`is_active = false`); 36 itens comuns estão publicados. `src/services/products.js` consulta somente os produtos ativos. O fallback local em `src/data/products.js` está vazio; se o Supabase falhar, itens antigos não reaparecem. O design da versão publicada, busca, filtros, carrinho no navegador e fechamento por WhatsApp foram preservados.
 
 A página usa somente a chave **publishable**, adequada para código público. Nunca adicionar uma chave `secret` ou `service_role` ao HTML, repositório ou ambiente do navegador.
 
 ## Segurança
 
 - RLS está ativo em `public.products`.
-- `anon` e `authenticated` recebem apenas `SELECT`; a política de leitura só permite linhas com `is_active = true`.
-- Nenhuma escrita pública está liberada. Alterações no catálogo exigem acesso administrativo ao Supabase ou backend seguro.
-- Migrações aplicadas: `supabase/migrations/20260923_create_products.sql` e `supabase/migrations/20260923_restrict_products_public_privileges.sql`.
+- `anon` lê apenas linhas com `is_active = true`; não tem permissão de escrita nas tabelas.
+- Apenas o e-mail confirmado `juniorloiola777@gmail.com` pode escrever em produtos, banners e imagens, por meio de políticas RLS.
+- O bucket privado `site-content` guarda imagens. O site gera links temporários somente para imagens associadas a produtos ou banners ativos.
+- O painel fica em `/admin.html` e usa login por e-mail do Supabase. É necessário configurar a URL do site publicado em **Authentication → URL Configuration → Redirect URLs** no projeto Supabase para que o link de login volte a `/admin.html`.
+- As migrações do painel são `20260924_admin_content.sql` e `20260924_verify_admin_email.sql`.
 
-## Próximos passos
-
-Definir se pedidos deverão ser persistidos e se haverá painel administrativo e autenticação. Esses recursos exigem novas tabelas e políticas específicas. Até lá, o pedido continua sendo enviado por WhatsApp e o carrinho continua no dispositivo do visitante.
+O pedido continua sendo enviado por WhatsApp e o carrinho continua no dispositivo do visitante. Apagar no painel desativa produtos e banners sem excluir seus registros do banco. As imagens substituídas são removidas do Storage depois que o novo registro é salvo.

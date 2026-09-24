@@ -5,7 +5,7 @@ import { ProductGrid, SectionHead, ProductRail, initRail } from '../components/P
 import { PromoDuo, BrandBanner } from '../components/Banners.js';
 import { LoungeSection, DeliverySection } from '../components/LoungeSection.js';
 import { ContactBand } from '../components/Footer.js';
-import { getById, productsIn, getCategories } from '../store/catalog.js';
+import { getById, getProducts, productsIn, getCategories } from '../store/catalog.js';
 import { isConsultPrice } from '../utils/currency.js';
 import { esc } from '../utils/sanitize.js';
 import { reveal, parallax } from '../utils/animations.js';
@@ -22,7 +22,7 @@ function spread(category, n) {
 function selection() {
   const ids = CONFIG.home.selection.ids;
   const list = ids.map(getById).filter(Boolean);
-  return list.length ? list : spread('Narguilés', 8);
+  return list.length ? list : priced(getProducts()).slice(0,8);
 }
 
 function featuredTabs() {

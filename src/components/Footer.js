@@ -54,7 +54,7 @@ export function Footer() {
     <div class="container footer-grid">
       <div class="footer-brand">
         ${brandMark({ variant: 'footer' })}
-        <p>Loja, lounge e delivery em ${esc(CONFIG.brand.city)}. Narguilés, essências, carvão, acessórios e bebidas.</p>
+        <p>Loja, lounge e delivery em ${esc(CONFIG.brand.city)}. Consulte os itens disponíveis no catálogo.</p>
       </div>
       <nav class="footer-col" aria-label="Navegação do rodapé">
         <p class="footer-title">Navegação</p>
@@ -85,7 +85,7 @@ export function Footer() {
     </div>
     <div class="footer-legal">
       <div class="container footer-legal-inner">
-        <p class="footer-age"><span class="age-badge age-badge--red">18+</span>Venda proibida para menores de 18 anos. Beba com moderação.</p>
+        <p class="footer-age">Atendimento em Valparaíso de Goiás e região.</p>
         <p>© ${year} ${esc(CONFIG.brand.fullName)}. Todos os direitos reservados.</p>
       </div>
     </div>

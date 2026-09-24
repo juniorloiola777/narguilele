@@ -89,7 +89,7 @@ export function MobileMenu() {
         ${cats.map((c) => `<li><a href="#/produtos?categoria=${c.slug}"><span>${esc(c.name)}</span><span class="mm-count">${c.count}</span></a></li>`).join('')}
       </ul>
       <a class="btn btn-whats btn-block" href="${waLink()}" target="_blank" rel="noopener">${icon('message', { size: 18 })}Falar no WhatsApp</a>
-      <p class="mm-age"><span class="age-badge">18+</span> Venda proibida para menores de 18 anos</p>
+      <p class="mm-age">Atendimento em Valparaíso de Goiás</p>
     </div>
   </div>`;
 }
