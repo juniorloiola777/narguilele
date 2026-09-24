@@ -80,6 +80,23 @@
     show('#dashboard', true);
     await load();
   }
+  $('#passwordLoginForm').onsubmit = event => { event.preventDefault(); run(async () => {
+    const email = $('#passwordEmail').value.trim().toLowerCase();
+    const password = $('#loginPassword').value;
+    const {error} = await db.auth.signInWithPassword({email,password});
+    $('#loginPassword').value = '';
+    if (error) throw error;
+    await sessionChanged();
+  }); };
+  $('#passwordSetupForm').onsubmit = event => { event.preventDefault(); run(async () => {
+    const password = $('#newPassword').value;
+    if (password.length < 8) throw new Error('A senha deve ter pelo menos 8 caracteres.');
+    if (password !== $('#confirmPassword').value) throw new Error('As senhas não coincidem.');
+    const {error} = await db.auth.updateUser({password});
+    if (error) throw error;
+    event.target.reset();
+    message('Senha salva. Você já pode entrar com e-mail e senha.');
+  }); };
   $('#loginForm').onsubmit = event => { event.preventDefault(); run(async () => {
     email = $('#email').value.trim().toLowerCase();
     const {error} = await db.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/admin.html',shouldCreateUser:true}});
@@ -154,3 +171,4 @@
   db.auth.onAuthStateChange(()=>setTimeout(()=>sessionChanged().catch(failed),0));
   sessionChanged().catch(failed);
 })();
+
