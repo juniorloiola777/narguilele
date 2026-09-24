@@ -1,10 +1,12 @@
 (() => {
   const URL = 'https://wpyzjukssdnoxpvrfmti.supabase.co';
   const KEY = 'sb_publishable_BwWltgSCyPETg1IFCTrFXQ_l0rvPv3u';
+  const ADMIN_USER = 'adminnarguilele1';
+  const ADMIN_EMAIL = 'juniorloiola777@gmail.com';
   const db = SiteDB.createClient(URL, KEY);
   const $ = selector => document.querySelector(selector);
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  let products = [], banners = [], email = '', busy = false;
+  let products = [], banners = [], busy = false;
   const categoryNames = {APERITIVO:'Alimentos',REFRIGERANTE:'Bebidas',ACESSORIOS:'Acessórios'};
   const show = (id, visible) => $(id).classList.toggle('hidden', !visible);
   function message(value, error = false) {
@@ -73,19 +75,21 @@
   async function refresh(text) { await load(); message(text); }
   async function sessionChanged() {
     const {data:{session}} = await db.auth.getSession();
-    show('#login', !session); show('#dashboard', false); show('#denied', false);
+    show('#login', !session); show('#dashboard', false); show('#denied', false); show('#siteHeader', false);
     if (!session) return;
     const {data,error} = await db.rpc('is_site_admin');
     if (error || data !== true) { show('#denied', true); return; }
+    show('#siteHeader', true);
     show('#dashboard', true);
     await load();
   }
   $('#passwordLoginForm').onsubmit = event => { event.preventDefault(); run(async () => {
-    const email = $('#passwordEmail').value.trim().toLowerCase();
+    const username = $('#username').value.trim();
     const password = $('#loginPassword').value;
-    const {error} = await db.auth.signInWithPassword({email,password});
     $('#loginPassword').value = '';
-    if (error) throw error;
+    if (username !== ADMIN_USER) throw new Error('Usuário ou senha inválidos.');
+    const {error} = await db.auth.signInWithPassword({email:ADMIN_EMAIL,password});
+    if (error) throw new Error('Usuário ou senha inválidos.');
     await sessionChanged();
   }); };
   $('#passwordSetupForm').onsubmit = event => { event.preventDefault(); run(async () => {
@@ -95,28 +99,7 @@
     const {error} = await db.auth.updateUser({password});
     if (error) throw error;
     event.target.reset();
-    message('Senha salva. Você já pode entrar com e-mail e senha.');
-  }); };
-  $('#loginForm').onsubmit = event => { event.preventDefault(); run(async () => {
-    email = $('#email').value.trim().toLowerCase();
-    const {error} = await db.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/admin.html',shouldCreateUser:false}});
-    if (error) throw error;
-    message('Enviamos um novo link. Copie o mais recente sem abri-lo e cole no campo abaixo.');
-  }); };
-  $('#codeForm').onsubmit = event => { event.preventDefault(); run(async () => {
-    const {error} = await db.auth.verifyOtp({email:email || $('#email').value.trim(),token:$('#code').value.trim(),type:'email'});
-    if (error) throw error;
-    await sessionChanged();
-  }); };
-  $('#linkForm').onsubmit = event => { event.preventDefault(); run(async () => {
-    const link = new URL($('#accessLink').value.trim());
-    if (link.hostname !== new URL(URL).hostname || link.pathname !== '/auth/v1/verify') throw new Error('Este link não é do projeto Supabase da loja.');
-    const token_hash = link.searchParams.get('token'), type = link.searchParams.get('type');
-    if (!token_hash || !['magiclink','email','signup'].includes(type)) throw new Error('Link de acesso inválido.');
-    const {error} = await db.auth.verifyOtp({token_hash,type});
-    if (error) throw error;
-    $('#accessLink').value = '';
-    await sessionChanged();
+    message('Senha salva. Você já pode entrar com usuário e senha.');
   }); };
   async function logout() { await db.auth.signOut(); await sessionChanged(); message('Sessão encerrada.'); }
   $('#logout').onclick = logout; $('#deniedLogout').onclick = logout;
